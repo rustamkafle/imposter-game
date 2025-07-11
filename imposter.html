@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Imposter Game</title>
   <style>
     body {
@@ -8,34 +10,67 @@
       background-color: #1e1e1e;
       color: white;
       text-align: center;
-      padding-top: 50px;
+      padding: 20px;
+      margin: 0;
     }
-    #gameScreen {
-      margin-top: 50px;
-      font-size: 2em;
+
+    h1 {
+      font-size: 1.8em;
+      margin-bottom: 20px;
+    }
+
+    #inputArea {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: center;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    #inputArea input {
+      padding: 12px;
+      font-size: 1.1em;
+      width: 90%;
+      max-width: 300px;
+      border-radius: 8px;
+      border: none;
+    }
+
+    #startBtn {
+      font-size: 1.2em;
+      padding: 12px 24px;
+      border: none;
+      background-color: #4CAF50;
+      color: white;
+      border-radius: 8px;
       cursor: pointer;
-      padding: 100px;
+    }
+
+    #gameScreen {
+      margin-top: 30px;
+      font-size: 1.5em;
+      cursor: pointer;
+      padding: 60px 20px;
       border: 4px dashed #ccc;
       border-radius: 20px;
-      width: 80%;
+      width: 95%;
       max-width: 500px;
       margin-left: auto;
       margin-right: auto;
+      word-wrap: break-word;
     }
-    #startBtn {
-      font-size: 1em;
-      padding: 10px 20px;
-      cursor: pointer;
-    }
-    #inputArea input {
-      padding: 8px;
-      margin: 10px;
-      font-size: 1em;
-    }
+
     .done {
       color: lightgreen;
-      font-size: 1.5em;
+      font-size: 1.3em;
       margin-top: 20px;
+    }
+
+    @media (hover: hover) {
+      #gameScreen:hover {
+        background-color: #333;
+      }
     }
   </style>
 </head>
@@ -51,7 +86,7 @@
   </div>
 
   <div id="gameScreen" style="display:none;">
-    👆 Click to see your role
+    👆 Tap to see your role
   </div>
 
   <div id="doneMsg" class="done"></div>
@@ -77,7 +112,7 @@
 
       document.getElementById("inputArea").style.display = "none";
       document.getElementById("gameScreen").style.display = "block";
-      document.getElementById("gameScreen").innerText = "👆 Click to see your role";
+      document.getElementById("gameScreen").innerText = "👆 Tap to see your role";
       document.getElementById("doneMsg").innerText = "";
     });
 
@@ -99,10 +134,10 @@
           document.getElementById("gameScreen").innerText = "✅ All players have seen their roles.";
           document.getElementById("doneMsg").innerText = "🎉 Let the game begin!";
         } else {
-          document.getElementById("gameScreen").innerText = "👆 Next player, click to see your role";
+          document.getElementById("gameScreen").innerText = "👆 Next player, tap to see your role";
         }
         revealed = false;
-      }, 1000); // 1 second
+      }, 1000);
     });
 
     function shuffle(array) {
