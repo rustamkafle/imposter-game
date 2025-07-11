@@ -136,7 +136,7 @@
       }
 
       roles = Array(imposterCount).fill("🚨 You are the IMPOSTER!");
-      roles = roles.concat(Array(totalPlayers - imposterCount).fill(`✅ Your word is: ${word}`));
+      roles = roles.concat(Array(totalPlayers - imposterCount).fill(`${word}`));
       shuffle(roles);
 
       document.getElementById("inputArea").style.display = "none";
