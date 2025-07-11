@@ -37,7 +37,7 @@
       border: none;
     }
 
-    #startBtn {
+    #startBtn, #restartBtn {
       font-size: 1.2em;
       padding: 12px 24px;
       border: none;
@@ -45,6 +45,12 @@
       color: white;
       border-radius: 8px;
       cursor: pointer;
+      margin-top: 10px;
+    }
+
+    #restartBtn {
+      background-color: #f44336;
+      display: none;
     }
 
     #gameScreen {
@@ -90,12 +96,35 @@
   </div>
 
   <div id="doneMsg" class="done"></div>
+  <button id="restartBtn">🔄 Restart Game</button>
 
   <script>
     let roles = [];
     let revealed = false;
 
-    document.getElementById("startBtn").addEventListener("click", () => {
+    document.getElementById("startBtn").addEventListener("click", startGame);
+    document.getElementById("restartBtn").addEventListener("click", resetGame);
+
+    document.getElementById("gameScreen").addEventListener("click", () => {
+      if (roles.length === 0 || revealed) return;
+
+      const role = roles.pop();
+      document.getElementById("gameScreen").innerText = role;
+      revealed = true;
+
+      setTimeout(() => {
+        if (roles.length === 0) {
+          document.getElementById("gameScreen").innerText = "✅ All players have seen their roles.";
+          document.getElementById("doneMsg").innerText = "🎉 Let the game begin!";
+          document.getElementById("restartBtn").style.display = "inline-block";
+        } else {
+          document.getElementById("gameScreen").innerText = "👆 Next player, tap to see your role";
+        }
+        revealed = false;
+      }, 1000);
+    });
+
+    function startGame() {
       const word = document.getElementById("wordInput").value.trim();
       const imposterCount = parseInt(document.getElementById("imposterInput").value);
       const totalPlayers = parseInt(document.getElementById("playerInput").value);
@@ -107,38 +136,29 @@
       }
 
       roles = Array(imposterCount).fill("🚨 You are the IMPOSTER!");
-      roles = roles.concat(Array(totalPlayers - imposterCount).fill(`${word}`));
+      roles = roles.concat(Array(totalPlayers - imposterCount).fill(`✅ Your word is: ${word}`));
       shuffle(roles);
 
       document.getElementById("inputArea").style.display = "none";
       document.getElementById("gameScreen").style.display = "block";
+      document.getElementById("restartBtn").style.display = "none";
       document.getElementById("gameScreen").innerText = "👆 Tap to see your role";
       document.getElementById("doneMsg").innerText = "";
-    });
+    }
 
-    document.getElementById("gameScreen").addEventListener("click", () => {
-      if (roles.length === 0) {
-        document.getElementById("gameScreen").innerText = "✅ All players have seen their roles.";
-        document.getElementById("doneMsg").innerText = "🎉 Let the game begin!";
-        return;
-      }
+    function resetGame() {
+      roles = [];
+      revealed = false;
 
-      if (revealed) return;
+      document.getElementById("wordInput").value = "";
+      document.getElementById("imposterInput").value = "";
+      document.getElementById("playerInput").value = "";
 
-      const role = roles.pop();
-      document.getElementById("gameScreen").innerText = role;
-      revealed = true;
-
-      setTimeout(() => {
-        if (roles.length === 0) {
-          document.getElementById("gameScreen").innerText = "✅ All players have seen their roles.";
-          document.getElementById("doneMsg").innerText = "🎉 Let the game begin!";
-        } else {
-          document.getElementById("gameScreen").innerText = "👆 Next player, tap to see your role";
-        }
-        revealed = false;
-      }, 1000);
-    });
+      document.getElementById("inputArea").style.display = "flex";
+      document.getElementById("gameScreen").style.display = "none";
+      document.getElementById("doneMsg").innerText = "";
+      document.getElementById("restartBtn").style.display = "none";
+    }
 
     function shuffle(array) {
       for (let i = array.length - 1; i > 0; i--) {
@@ -149,4 +169,3 @@
   </script>
 </body>
 </html>
-
